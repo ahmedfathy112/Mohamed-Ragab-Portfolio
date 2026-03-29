@@ -160,7 +160,7 @@ function HeroSection() {
         {/* Social row */}
         <div className="flex items-center justify-center gap-6 mt-12">
           <a
-            href="https://github.com/MohamedRagab"
+            href="https://github.com/m7mdragab74"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-500 hover:text-blue-400 transition-colors text-xl"
@@ -168,7 +168,7 @@ function HeroSection() {
             <i className="fab fa-github" />
           </a>
           <a
-            href="https://linkedin.com/in/MohamedRagab"
+            href="https://www.linkedin.com/in/mohamedragab74/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-500 hover:text-blue-400 transition-colors text-xl"
@@ -176,7 +176,7 @@ function HeroSection() {
             <i className="fab fa-linkedin" />
           </a>
           <a
-            href="mailto:mohamed@example.com"
+            href="mailto:mohamedhamza642023@gmail.com"
             className="text-gray-500 hover:text-blue-400 transition-colors text-xl"
           >
             <i className="fas fa-envelope" />
@@ -384,124 +384,6 @@ function SkillsSection() {
 
 /* ── Projects ───────────────────────────────────────────────── */
 
-const projectColorMap: Record<
-  string,
-  { border: string; glow: string; icon: string }
-> = {
-  blue: {
-    border: "border-blue-500/20 hover:border-blue-500/50",
-    glow: "group-hover:shadow-blue-500/10",
-    icon: "bg-blue-500/20 text-blue-400",
-  },
-  purple: {
-    border: "border-purple-500/20 hover:border-purple-500/50",
-    glow: "group-hover:shadow-purple-500/10",
-    icon: "bg-purple-500/20 text-purple-400",
-  },
-  indigo: {
-    border: "border-indigo-500/20 hover:border-indigo-500/50",
-    glow: "group-hover:shadow-indigo-500/10",
-    icon: "bg-indigo-500/20 text-indigo-400",
-  },
-};
-
-// function ProjectsSection() {
-//   return (
-//     <section id="projects" className="py-24 px-4">
-//       <div className="max-w-6xl mx-auto">
-//         <SectionLabel icon="fa-folder-open" text="Projects" />
-//         <p className="text-gray-500 text-center mt-3 mb-14">
-//           Real-world analyses turning raw data into meaningful stories.
-//         </p>
-
-//         <div className="grid lg:grid-cols-3 gap-8">
-//           {projects.map((p) => {
-//             const c = projectColorMap[p.color];
-//             return (
-//               <div
-//                 key={p.title}
-//                 className={`group bg-white/[0.03] rounded-2xl p-6 border ${c.border} transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${c.glow} flex flex-col`}
-//               >
-//                 {/* Header */}
-//                 <div className="flex items-start justify-between mb-4">
-//                   <div
-//                     className={`w-12 h-12 rounded-xl ${c.icon} flex items-center justify-center text-lg`}
-//                   >
-//                     <i className={`fas ${p.icon}`} />
-//                   </div>
-//                   <span
-//                     className={`text-xs px-3 py-1 rounded-full border font-medium ${p.badgeColor}`}
-//                   >
-//                     {p.badge}
-//                   </span>
-//                 </div>
-
-//                 <h3 className="text-lg font-bold mb-3 leading-snug">
-//                   {p.title}
-//                 </h3>
-//                 <p className="text-gray-400 text-sm leading-relaxed mb-5">
-//                   {p.description}
-//                 </p>
-
-//                 {/* Tools */}
-//                 <div className="flex flex-wrap gap-2 mb-5">
-//                   {p.tools.map((t) => (
-//                     <span
-//                       key={t}
-//                       className="text-xs px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-300"
-//                     >
-//                       {t}
-//                     </span>
-//                   ))}
-//                 </div>
-
-//                 {/* Key insights */}
-//                 <div className="bg-white/[0.02] rounded-xl p-4 border border-white/5 mb-6 flex-1">
-//                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-//                     Key Insights
-//                   </p>
-//                   <ul className="space-y-2">
-//                     {p.insights.map((ins) => (
-//                       <li
-//                         key={ins}
-//                         className="flex items-start gap-2 text-xs text-gray-400"
-//                       >
-//                         <i className="fas fa-circle-check text-green-500 mt-0.5 flex-shrink-0" />
-//                         {ins}
-//                       </li>
-//                     ))}
-//                   </ul>
-//                 </div>
-
-//                 {/* CTA */}
-//                 {p.github ? (
-//                   <a
-//                     href={p.github}
-//                     target="_blank"
-//                     rel="noopener noreferrer"
-//                     className="mt-auto inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border border-white/10 bg-white/5 text-sm font-medium hover:bg-white/10 transition-colors"
-//                   >
-//                     <i className="fab fa-github" />
-//                     View on GitHub
-//                   </a>
-//                 ) : (
-//                   <button
-//                     disabled
-//                     className="mt-auto inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border border-white/5 bg-white/[0.02] text-sm font-medium text-gray-600 cursor-not-allowed"
-//                   >
-//                     <i className="fas fa-clock" />
-//                     Coming Soon
-//                   </button>
-//                 )}
-//               </div>
-//             );
-//           })}
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
 /* ── Portfolio Highlight ────────────────────────────────────── */
 function PortfolioHighlight() {
   return (
@@ -514,7 +396,7 @@ function PortfolioHighlight() {
 
         <div className="flex flex-row justify-center gap-8">
           {/* PDF Portfolio */}
-          <div className="bg-white/[0.03] w-1/2 rounded-2xl p-8 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 hover:-translate-y-1 group">
+          <div className="bg-white/[0.03] w-1/2 max-md:w-full rounded-2xl p-8 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 hover:-translate-y-1 group">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center">
                 <i className="fas fa-file-pdf text-blue-400 text-2xl" />
@@ -537,63 +419,13 @@ function PortfolioHighlight() {
             </div>
             <a
               href="#contact"
+              target="_blank"
               className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 font-medium text-sm hover:opacity-90 transition-opacity"
             >
               <i className="fas fa-download" />
               Request Report
             </a>
           </div>
-
-          {/* Power BI Dashboard */}
-          {/* <div className="bg-white/[0.03] rounded-2xl p-8 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 hover:-translate-y-1 group">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center">
-                <i className="fas fa-chart-pie text-purple-400 text-2xl" />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg">Power BI Dashboard</h3>
-                <p className="text-gray-500 text-sm">Interactive Analytics</p>
-              </div>
-            </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              An interactive Power BI dashboard with dynamic slicers, custom DAX
-              measures, and executive KPI cards — built to demonstrate
-              end-to-end BI development from raw data to actionable visual
-              insights.
-            </p>
-            <div className="h-40 bg-white/[0.02] rounded-xl border border-white/5 flex items-center justify-center mb-6 relative overflow-hidden">
-
-              <div className="w-full h-full p-3 flex flex-col gap-2">
-                <div className="flex gap-2 flex-1">
-                  {[45, 70, 55, 90, 40].map((h, i) => (
-                    <div key={i} className="flex-1 flex items-end">
-                      <div
-                        className="w-full rounded-sm bg-gradient-to-t from-purple-600/60 to-purple-400/30"
-                        style={{ height: `${h}%` }}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className="flex gap-2">
-                  <div className="h-2 flex-1 rounded-full bg-white/5" />
-                  <div className="h-2 flex-1 rounded-full bg-purple-500/30" />
-                  <div className="h-2 flex-1 rounded-full bg-white/5" />
-                </div>
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-                <span className="text-xs text-gray-500 bg-black/60 px-3 py-1 rounded-full">
-                  Dashboard Preview
-                </span>
-              </div>
-            </div>
-            <button
-              disabled
-              className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-purple-500/20 bg-purple-500/5 font-medium text-sm text-purple-400/60 cursor-not-allowed"
-            >
-              <i className="fas fa-clock" />
-              Coming Soon
-            </button>
-          </div> */}
         </div>
       </div>
     </section>
