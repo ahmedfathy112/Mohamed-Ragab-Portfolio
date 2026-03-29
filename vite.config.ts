@@ -7,14 +7,21 @@ import contentCollections from "@content-collections/vite";
 
 // لاحظ أننا حذفنا استيراد netlify
 
-export default defineConfig({
-  // ... الإضافات الأخرى
+const config = defineConfig({
+  plugins: [
+    contentCollections(),
+    viteTsConfigPaths({ projects: ["./tsconfig.json"] }),
+    tailwindcss(),
+    tanstackStart(),
+    viteReact(),
+  ],
+  // هذا الجزء هو المفتاح لحل مشكلة الـ Hanging والـ createRequire
+  ssr: {
+    external: ["@content-collections/core", "fdir", "module", "fs", "path"],
+  },
   optimizeDeps: {
     exclude: ["@content-collections/vite", "fdir"],
   },
-  build: {
-    rollupOptions: {
-      external: ["module", "fs", "path"],
-    },
-  },
 });
+
+export default config;
