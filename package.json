@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vinxi dev",
-    "build": "npx content-collections build && vinxi build",
-    "start": "vinxi start"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.2.2",
@@ -15,8 +15,6 @@
     "@supabase/supabase-js": "^2.100.1",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-router": "^1.163.3",
-    "@tanstack/react-start": "^1.166.1",
-    "@tanstack/router-plugin": "^1.164.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.576.0",

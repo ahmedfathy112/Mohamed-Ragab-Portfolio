@@ -1,4 +1,3 @@
-import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabase, type Project, type ProjectFormData } from "../lib/supabase";
 
@@ -16,203 +15,127 @@ const ProjectFormSchema = z.object({
   image_url: z.string().optional(),
 });
 
-// Fetch all projects
-export const fetchProjects = createServerFn({ method: "GET" }).handler(
-  async () => {
-    try {
-      // Check if Supabase is configured
-      const url = process.env.VITE_SUPABASE_URL;
-      const key = process.env.VITE_SUPABASE_ANON_KEY;
+const ensureSupabaseEnv = () => {
+  const url = import.meta.env.VITE_SUPABASE_URL;
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  if (!url || !key) {
+    throw new Error(
+      "Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment.",
+    );
+  }
+};
 
-      if (!url || !key) {
-        throw new Error(
-          "Supabase is not configured. Create a .env.local file with VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY",
-        );
-      }
+export async function fetchProjects() {
+  ensureSupabaseEnv();
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data as Project[]) || [];
+}
 
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      return data as Project[];
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-      throw new Error(
-        error instanceof Error ? error.message : "Failed to fetch projects",
-      );
-    }
-  },
-);
-
-// Fetch single project by ID
-export const fetchProjectById = createServerFn({ method: "GET" })
-  .inputValidator((data: { id: string }) => data)
-  .handler(async ({ data }) => {
-    try {
-      const url = process.env.VITE_SUPABASE_URL;
-      const key = process.env.VITE_SUPABASE_ANON_KEY;
-
-      if (!url || !key) {
-        throw new Error(
-          "Supabase is not configured. Create a .env.local file with VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY",
-        );
-      }
-
-      const { data: project, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("id", data.id)
-        .single();
-
-      if (error) throw error;
-      return project as Project;
-    } catch (error) {
-      console.error("Error fetching project:", error);
-      throw new Error(
-        error instanceof Error ? error.message : "Failed to fetch project",
-      );
-    }
-  });
+export async function fetchProjectById(input: { data: { id: string } } | { id: string }) {
+  ensureSupabaseEnv();
+  const id = "data" in input ? input.data.id : input.id;
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (error) throw error;
+  return data as Project;
+}
 
 // Create project
-export const createProject = createServerFn({ method: "POST" })
-  .inputValidator((data: Omit<ProjectFormData, "image_file">) => data)
-  .handler(async ({ data }) => {
-    try {
-      // Validate input
-      const validatedData = ProjectFormSchema.parse(data);
-
-      const { data: project, error } = await supabase
-        .from("projects")
-        .insert([
-          {
-            title: validatedData.title,
-            description: validatedData.description,
-            github_url: validatedData.github_url,
-            linkedin_url: validatedData.linkedin_url,
-            skills: validatedData.skills,
-            image_url: validatedData.image_url || null,
-          },
-        ])
-        .select()
-        .single();
-
-      if (error) throw error;
-      return project as Project;
-    } catch (error) {
-      console.error("Error creating project:", error);
-      throw new Error(
-        error instanceof Error ? error.message : "Failed to create project",
-      );
-    }
-  });
+export async function createProject(input: { data: Omit<ProjectFormData, "image_file"> }) {
+  ensureSupabaseEnv();
+  const validatedData = ProjectFormSchema.parse(input.data);
+  const { data, error } = await supabase
+    .from("projects")
+    .insert([
+      {
+        title: validatedData.title,
+        description: validatedData.description,
+        github_url: validatedData.github_url,
+        linkedin_url: validatedData.linkedin_url,
+        skills: validatedData.skills,
+        image_url: validatedData.image_url || null,
+      },
+    ])
+    .select()
+    .single();
+  if (error) throw error;
+  return data as Project;
+}
 
 // Update project
-export const updateProject = createServerFn({ method: "POST" })
-  .inputValidator((data: any) => data)
-  .handler(async ({ data }) => {
-    try {
-      const projectData = data?.data || data;
-      const projectId = projectData?.id;
-
-      if (!projectId) {
-        throw new Error("Project ID is required for update");
-      }
-
-      const validatedData = ProjectFormSchema.parse(projectData);
-
-      const { data: project, error } = await supabase
-        .from("projects")
-        .update({
-          title: validatedData.title,
-          description: validatedData.description,
-          github_url: validatedData.github_url,
-          linkedin_url: validatedData.linkedin_url,
-          skills: validatedData.skills,
-          image_url: validatedData.image_url || null,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", projectId)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      return project;
-    } catch (error: any) {
-      console.error("Error updating project:", error);
-      throw new Error(
-        error instanceof Error ? error.message : "Failed to update project",
-      );
-    }
-  });
+export async function updateProject(input: { data: ProjectFormData }) {
+  ensureSupabaseEnv();
+  const projectData = input.data;
+  const projectId = projectData.id;
+  if (!projectId) throw new Error("Project ID is required for update");
+  const validatedData = ProjectFormSchema.parse(projectData);
+  const { data, error } = await supabase
+    .from("projects")
+    .update({
+      title: validatedData.title,
+      description: validatedData.description,
+      github_url: validatedData.github_url,
+      linkedin_url: validatedData.linkedin_url,
+      skills: validatedData.skills,
+      image_url: validatedData.image_url || null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", projectId)
+    .select()
+    .single();
+  if (error) throw error;
+  return data as Project;
+}
 
 // Delete project
-export const deleteProject = createServerFn({ method: "POST" })
-  .inputValidator((d: { id: string }) => d)
-  .handler(async ({ data }) => {
-    console.log("Full payload received:", data);
+export async function deleteProject(input: { data: { id: string } } | { id: string }) {
+  ensureSupabaseEnv();
+  const projectId = "data" in input ? input.data.id : input.id;
+  if (!projectId) throw new Error("Missing project ID");
 
-    const projectId = (data as any)?.id || (data as any)?.data?.id || data;
+  const { data: project } = await supabase
+    .from("projects")
+    .select("image_url")
+    .eq("id", projectId)
+    .single();
 
-    if (!projectId || typeof projectId !== "string") {
-      console.error("Critical: Could not resolve ID from payload", data);
-      throw new Error("Missing project ID on server side");
+  if (project?.image_url) {
+    const parts = project.image_url.split("/projects/");
+    if (parts.length > 1) {
+      await supabase.storage.from("projects").remove([decodeURI(parts[1])]);
     }
+  }
 
-    try {
-      const { data: project } = await supabase
-        .from("projects")
-        .select("image_url")
-        .eq("id", projectId)
-        .single();
+  const { error } = await supabase.from("projects").delete().eq("id", projectId);
+  if (error) throw error;
+  return { success: true };
+}
 
-      if (project?.image_url) {
-        const parts = project.image_url.split("/projects/");
-        if (parts.length > 1) {
-          await supabase.storage.from("projects").remove([decodeURI(parts[1])]);
-        }
-      }
+export async function uploadProjectImage(input: { data: { fileName: string; base64: string } }) {
+  ensureSupabaseEnv();
+  const { fileName, base64 } = input.data;
+  const base64Data = base64.split(",")[1] ?? base64;
+  const binary = atob(base64Data);
+  const bytes = Uint8Array.from({ length: binary.length }, (_, i) =>
+    binary.charCodeAt(i),
+  );
+  const file = new File([bytes], fileName, { type: "image/jpeg" });
 
-      const { error } = await supabase
-        .from("projects")
-        .delete()
-        .eq("id", projectId);
-      if (error) throw error;
+  const { data: uploadedFile, error } = await supabase.storage
+    .from("projects")
+    .upload(fileName, file, { upsert: false });
+  if (error) throw error;
 
-      return { success: true };
-    } catch (err: any) {
-      throw new Error(err.message);
-    }
-  });
-// Upload image to Supabase Storage
-export const uploadProjectImage = createServerFn({ method: "POST" })
-  .inputValidator((data: { fileName: string; base64: string }) => data)
-  .handler(async ({ data }) => {
-    try {
-      const buffer = Buffer.from(data.base64.split(",")[1], "base64");
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("projects").getPublicUrl(uploadedFile.path);
 
-      const { data: uploadedFile, error } = await supabase.storage
-        .from("projects")
-        .upload(data.fileName, buffer, {
-          contentType: "image/jpeg",
-          upsert: false,
-        });
-
-      if (error) throw error;
-
-      // Get public URL
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("projects").getPublicUrl(uploadedFile.path);
-
-      return { url: publicUrl };
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      throw new Error(
-        error instanceof Error ? error.message : "Failed to upload image",
-      );
-    }
-  });
+  return { url: publicUrl };
+}
