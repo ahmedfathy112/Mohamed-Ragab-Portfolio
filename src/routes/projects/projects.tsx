@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { ProjectCard } from "@/components/ProjectCard";
 import { fetchProjects } from "@/server/projects.functions";
 
-export const Route = createFileRoute("/projects/projects")({
+export const Route = createFileRoute("/projects")({
   loader: async () => {
     try {
       const projects = await fetchProjects();

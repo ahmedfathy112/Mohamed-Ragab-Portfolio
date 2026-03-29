@@ -61,7 +61,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
 
         <div className="mt-auto space-y-3">
           <Link
-            to="/projects/$slug"
+            to="/projects/projects/$slug"
             params={{ slug: project.id }}
             className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90"
           >
