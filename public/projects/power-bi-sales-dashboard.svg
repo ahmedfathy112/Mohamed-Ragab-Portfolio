@@ -1,0 +1,33 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="720" fill="#0B1110"/>
+  <rect x="52" y="52" width="1096" height="616" rx="32" fill="url(#bg)"/>
+  <text x="96" y="96" fill="#FDE68A" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Interactive Power BI Sales Dashboard</text>
+  <rect x="96" y="132" width="952" height="500" rx="28" fill="#121B16" stroke="#CA8A04"/>
+  <rect x="132" y="168" width="200" height="116" rx="20" fill="#3F2A00"/>
+  <rect x="356" y="168" width="200" height="116" rx="20" fill="#4A3300"/>
+  <rect x="580" y="168" width="200" height="116" rx="20" fill="#654600"/>
+  <rect x="804" y="168" width="208" height="116" rx="20" fill="#7C5800"/>
+  <text x="156" y="206" fill="#FEF3C7" font-family="Segoe UI, Arial, sans-serif" font-size="16">Revenue</text>
+  <text x="380" y="206" fill="#FEF3C7" font-family="Segoe UI, Arial, sans-serif" font-size="16">Orders</text>
+  <text x="604" y="206" fill="#FEF3C7" font-family="Segoe UI, Arial, sans-serif" font-size="16">Growth</text>
+  <text x="828" y="206" fill="#FEF3C7" font-family="Segoe UI, Arial, sans-serif" font-size="16">Regions</text>
+  <text x="156" y="246" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">$284K</text>
+  <text x="380" y="246" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">4,920</text>
+  <text x="604" y="246" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">+18%</text>
+  <text x="828" y="246" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">6</text>
+  <rect x="132" y="332" width="536" height="252" rx="24" fill="#0E1511" stroke="#5B4200"/>
+  <rect x="700" y="332" width="312" height="252" rx="24" fill="#0E1511" stroke="#5B4200"/>
+  <path d="M168 540L240 500L312 516L384 458L456 430L528 386L600 362L632 350" stroke="#FACC15" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="240" cy="500" r="9" fill="#FEF9C3"/>
+  <circle cx="384" cy="458" r="9" fill="#FEF9C3"/>
+  <circle cx="528" cy="386" r="9" fill="#FEF9C3"/>
+  <rect x="736" y="388" width="60" height="152" rx="12" fill="#CA8A04"/>
+  <rect x="820" y="436" width="60" height="104" rx="12" fill="#D4A427"/>
+  <rect x="904" y="352" width="60" height="188" rx="12" fill="#EAB308"/>
+  <defs>
+    <linearGradient id="bg" x1="52" y1="52" x2="1148" y2="668" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1C1603"/>
+      <stop offset="1" stop-color="#201F09"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,0 +1,33 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="720" fill="#090D1C"/>
+  <rect x="52" y="52" width="1096" height="616" rx="32" fill="url(#bg)"/>
+  <text x="96" y="96" fill="#C4B5FD" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Retail Sales Data Cleaning &amp; EDA</text>
+  <rect x="96" y="132" width="300" height="500" rx="24" fill="#111326" stroke="#4C1D95"/>
+  <rect x="432" y="132" width="616" height="232" rx="24" fill="#111326" stroke="#4C1D95"/>
+  <rect x="432" y="400" width="616" height="232" rx="24" fill="#111326" stroke="#4C1D95"/>
+  <text x="124" y="176" fill="#F5F3FF" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Cleaning Pipeline</text>
+  <text x="460" y="176" fill="#F5F3FF" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Quarterly Revenue</text>
+  <text x="460" y="444" fill="#F5F3FF" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Category Performance</text>
+  <rect x="124" y="214" width="244" height="52" rx="16" fill="#2E1065"/>
+  <rect x="124" y="286" width="244" height="52" rx="16" fill="#3B0764"/>
+  <rect x="124" y="358" width="244" height="52" rx="16" fill="#4C1D95"/>
+  <rect x="124" y="430" width="244" height="52" rx="16" fill="#6D28D9"/>
+  <text x="148" y="246" fill="#E9D5FF" font-family="Segoe UI, Arial, sans-serif" font-size="16">Null handling</text>
+  <text x="148" y="318" fill="#E9D5FF" font-family="Segoe UI, Arial, sans-serif" font-size="16">Type fixes</text>
+  <text x="148" y="390" fill="#E9D5FF" font-family="Segoe UI, Arial, sans-serif" font-size="16">Duplicate removal</text>
+  <text x="148" y="462" fill="#E9D5FF" font-family="Segoe UI, Arial, sans-serif" font-size="16">Outlier checks</text>
+  <path d="M472 314L560 286L648 300L736 246L824 258L912 206L1000 182" stroke="#A78BFA" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="560" cy="286" r="10" fill="#F5F3FF"/>
+  <circle cx="736" cy="246" r="10" fill="#F5F3FF"/>
+  <circle cx="912" cy="206" r="10" fill="#F5F3FF"/>
+  <rect x="472" y="484" width="120" height="96" rx="16" fill="#7C3AED"/>
+  <rect x="624" y="452" width="120" height="128" rx="16" fill="#8B5CF6"/>
+  <rect x="776" y="420" width="120" height="160" rx="16" fill="#A78BFA"/>
+  <rect x="928" y="468" width="120" height="112" rx="16" fill="#C4B5FD"/>
+  <defs>
+    <linearGradient id="bg" x1="52" y1="52" x2="1148" y2="668" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#120B2E"/>
+      <stop offset="1" stop-color="#1C1038"/>
+    </linearGradient>
+  </defs>
+</svg>
