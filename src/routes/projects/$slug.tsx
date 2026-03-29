@@ -40,7 +40,7 @@ function ProjectDetails() {
             {projectError ?? "The project you are looking for does not exist."}
           </p>
           <Link
-            to="/projects/projects"
+            to="/projects"
             className="inline-flex items-center gap-2 rounded-xl bg-cyan-500 px-5 py-3 font-semibold text-white transition hover:opacity-90"
           >
             <ArrowLeft size={16} />
@@ -55,7 +55,7 @@ function ProjectDetails() {
     <div className="min-h-screen bg-[#0a0f1e] px-4 py-24 text-gray-100">
       <div className="mx-auto max-w-5xl">
         <Link
-          to="/projects/projects"
+          to="/projects"
           className="mb-8 inline-flex items-center gap-2 text-sm text-slate-300 transition hover:text-white"
         >
           <ArrowLeft size={16} />

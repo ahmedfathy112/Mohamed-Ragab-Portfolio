@@ -1,4 +1,9 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import {
+  Link,
+  Outlet,
+  createFileRoute,
+  useMatchRoute,
+} from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 
 import { ProjectCard } from "@/components/ProjectCard";
@@ -21,7 +26,15 @@ export const Route = createFileRoute("/projects")({
 });
 
 function Projects() {
+  const matchRoute = useMatchRoute();
+  const isViewingDetails = Boolean(
+    matchRoute({ to: "/projects/$slug", fuzzy: true }),
+  );
   const { projects, projectsError } = Route.useLoaderData();
+
+  if (isViewingDetails) {
+    return <Outlet />;
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0f1e] px-4 py-24 text-gray-100">

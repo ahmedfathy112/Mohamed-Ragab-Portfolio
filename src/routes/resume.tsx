@@ -1,3 +1,4 @@
+/* @refresh reload */
 import { marked } from 'marked'
 
 import { createFileRoute } from '@tanstack/react-router'

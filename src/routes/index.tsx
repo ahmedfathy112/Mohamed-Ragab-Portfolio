@@ -418,7 +418,7 @@ function PortfolioHighlight() {
               </div>
             </div>
             <a
-              href="#contact"
+              href="https://drive.google.com/file/d/1zUTb_4k3s0GpL2KywuR68zyRNuGZqcgt/view?usp=sharing"
               target="_blank"
               className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 font-medium text-sm hover:opacity-90 transition-opacity"
             >
@@ -689,7 +689,7 @@ function HomeProjectsSection() {
 
         <div className="mt-10 flex justify-center">
           <Link
-            to="/projects/projects"
+            to="/projects"
             className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
           >
             Explore all projects

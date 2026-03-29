@@ -1,3 +1,4 @@
+/* @refresh reload */
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { allBlogs } from 'content-collections'
 import { marked } from 'marked'
