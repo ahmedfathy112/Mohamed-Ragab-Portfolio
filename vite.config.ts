@@ -9,7 +9,7 @@ import contentCollections from "@content-collections/vite";
 
 const config = defineConfig({
   plugins: [
-    contentCollections(),
+    // contentCollections(),
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
