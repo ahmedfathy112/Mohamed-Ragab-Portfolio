@@ -3,8 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite dev --port 3000",
-    "build": "node node_modules/vite/bin/vite.js build"
+    "dev": "vinxi dev",
+    "build": "npx content-collections build && vinxi build",
+    "start": "vinxi start"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.2.2",
@@ -32,7 +33,6 @@
   "devDependencies": {
     "@content-collections/core": "^0.14.3",
     "@content-collections/vite": "^0.2.9",
-    "@netlify/vite-plugin-tanstack-start": "^1.2.14",
     "@tailwindcss/vite": "^4.0.6",
     "@types/node": "^22.10.2",
     "@types/react": "^19.2.0",
