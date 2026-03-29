@@ -7,18 +7,14 @@ import contentCollections from "@content-collections/vite";
 
 // لاحظ أننا حذفنا استيراد netlify
 
-const config = defineConfig({
-  plugins: [
-    // contentCollections(),
-    viteTsConfigPaths({
-      projects: ["./tsconfig.json"],
-    }),
-    tailwindcss(),
-    // tanstackStart و viteReact يفضل وضعهما في النهاية
-    // لضمان معالجة الملفات بعد الـ تصفية والمسارات
-    tanstackStart(),
-    viteReact(),
-  ],
+export default defineConfig({
+  // ... الإضافات الأخرى
+  optimizeDeps: {
+    exclude: ["@content-collections/vite", "fdir"],
+  },
+  build: {
+    rollupOptions: {
+      external: ["module", "fs", "path"],
+    },
+  },
 });
-
-export default config;
