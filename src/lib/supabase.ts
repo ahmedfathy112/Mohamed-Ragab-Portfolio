@@ -17,7 +17,7 @@ export interface Project {
   github_url: string;
   linkedin_url: string;
   skills: string[];
-  image_url: string;
+  image_url: string[];
   created_at: string;
   updated_at: string;
 }
@@ -29,6 +29,6 @@ export interface ProjectFormData {
   github_url: string;
   linkedin_url: string;
   skills: string[];
-  image_url?: string;
-  image_file?: File;
+  image_url?: string[];
+  image_files?: File[];
 }

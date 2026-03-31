@@ -80,19 +80,20 @@ export default function ProjectsDashboard() {
     try {
       setIsSubmitting(true);
 
-      let imageUrl = formData.image_url;
-      if (formData.image_file) {
-        imageUrl = await handleImageUpload(formData.image_file);
-      }
+      const existingImages = formData.image_url ?? [];
+      const newFiles = formData.image_files ?? [];
+      const uploadedImageUrls = await Promise.all(
+        newFiles.map((file) => handleImageUpload(file)),
+      );
 
-      const projectData: Omit<ProjectFormData, "image_file"> = {
+      const projectData: Omit<ProjectFormData, "image_files"> = {
         id: formData.id,
         title: formData.title,
         description: formData.description,
         github_url: formData.github_url,
         linkedin_url: formData.linkedin_url,
         skills: formData.skills,
-        image_url: imageUrl,
+        image_url: [...existingImages, ...uploadedImageUrls],
       };
 
       if (editingProject) {

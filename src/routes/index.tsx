@@ -535,7 +535,7 @@ function ContactSection() {
 
   return (
     <section id="contact" className="py-24 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto max-md:w-full">
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium">
             <i className="fas fa-paper-plane text-xs" /> Get in Touch
@@ -545,12 +545,12 @@ function ContactSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+        <div className="flex  gap-12 items-start max-md:flex-col">
           {/* Info Side */}
-          <div className="space-y-8">
+          <div className="space-y-8 w-1/2 max-md:w-full">
             <div>
               <h3 className="text-2xl font-bold mb-4">Let's Work Together</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-gray-400 leading-relaxed max-md:text-sm">
                 Whether you're looking for a data analyst to join your team or
                 need help turning your data into insights, I'd love to hear from
                 you.
@@ -565,7 +565,7 @@ function ContactSection() {
                   href={s.href}
                   target={s.href.startsWith("http") ? "_blank" : undefined}
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/5 hover:border-blue-500/30 transition-colors group"
+                  className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/5 hover:border-blue-500/30 transition-colors group max-md:gap-2 max-md:p-2 max-md:flex-wrap"
                 >
                   <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition-colors">
                     <i className={`${s.icon} text-blue-400`} />
@@ -583,7 +583,7 @@ function ContactSection() {
           {/* Form Side */}
           <form
             onSubmit={handleSubmit}
-            className="space-y-5 bg-white/[0.03] rounded-2xl p-8 border border-white/5"
+            className="space-y-5 w-1/2 bg-white/[0.03] rounded-2xl p-8 border border-white/5 max-md:w-full"
           >
             <div>
               <label

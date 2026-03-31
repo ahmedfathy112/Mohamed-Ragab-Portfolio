@@ -36,9 +36,9 @@ export default function ProjectGrid({
           >
             {/* Image Container */}
             <div className="relative w-full h-56 overflow-hidden bg-slate-900">
-              {project.image_url && !imageErrors.has(project.id) ? (
+              {project.image_url?.[0] && !imageErrors.has(project.id) ? (
                 <img
-                  src={project.image_url}
+                  src={project.image_url[0]}
                   alt={project.title}
                   onError={() => handleImageError(project.id)}
                   className={cn(

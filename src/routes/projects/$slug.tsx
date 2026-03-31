@@ -1,5 +1,12 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Github, Linkedin } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  Github,
+  Linkedin,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { fetchProjectById } from "@/server/projects.functions";
@@ -80,7 +87,7 @@ function ProjectDetails() {
               {project.title}
             </h1>
             <p className="max-w-3xl text-lg leading-8 text-slate-300">
-              {project.description.split("\n")[0]}...{" "}
+              {project.description.slice(0, 250)}...{" "}
             </p>
           </div>
 
@@ -122,21 +129,10 @@ function ProjectDetails() {
           </div>
         </div>
 
-        <div className="mt-10 overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03]">
-          {project.image_url ? (
-            <img
-              src={project.image_url}
-              alt={project.title}
-              className="h-auto w-full object-cover"
-            />
-          ) : (
-            <div className="flex h-80 items-end bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.32),_transparent_36%),linear-gradient(135deg,_#0f172a,_#111827_55%,_#0b1120)] p-10">
-              <p className="text-2xl font-semibold text-white">
-                {project.title}
-              </p>
-            </div>
-          )}
-        </div>
+        <ProjectGallery
+          images={project.image_url ?? []}
+          title={project.title}
+        />
 
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
@@ -167,6 +163,79 @@ function ProjectDetails() {
           </p>
         </div>
       </div>
+    </div>
+  );
+}
+
+function ProjectGallery({
+  images,
+  title,
+}: {
+  images: string[];
+  title: string;
+}) {
+  const validImages = (images ?? []).filter(Boolean);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  if (!validImages.length) {
+    return (
+      <div className="mt-10 overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03]">
+        <div className="flex h-80 items-end bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.32),_transparent_36%),linear-gradient(135deg,_#0f172a,_#111827_55%,_#0b1120)] p-10">
+          <p className="text-2xl font-semibold text-white">{title}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev === 0 ? validImages.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % validImages.length);
+  };
+
+  return (
+    <div className="mt-10 overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] relative">
+      <img
+        src={validImages[activeIndex]}
+        alt={`${title} image ${activeIndex + 1}`}
+        className="h-auto w-full object-cover transition duration-500"
+      />
+
+      {validImages.length > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={handlePrev}
+            aria-label="Previous image"
+            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white transition hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            type="button"
+            onClick={handleNext}
+            aria-label="Next image"
+            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white transition hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          >
+            <ChevronRight size={20} />
+          </button>
+
+          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+            {validImages.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setActiveIndex(idx)}
+                className={`h-2 w-2 rounded-full border border-white/40 transition ${
+                  idx === activeIndex ? "bg-white" : "bg-white/20"
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -26,13 +26,14 @@ export default function ProjectForm({
     github_url: project?.github_url || "",
     linkedin_url: project?.linkedin_url || "",
     skills: project?.skills || [],
-    image_url: project?.image_url || "",
+    image_url: project?.image_url || [],
+    image_files: [],
   });
 
   const [skillInput, setSkillInput] = useState("");
-  const [previewUrl, setPreviewUrl] = useState<string>(
-    project?.image_url || "",
-  );
+  const [localImages, setLocalImages] = useState<
+    { file: File; preview: string }[]
+  >([]);
   const [imageError, setImageError] = useState("");
 
   const handleInputChange = (
@@ -45,34 +46,75 @@ export default function ProjectForm({
     }));
   };
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const readFileAsDataUrl = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error("Failed to read file"));
+      reader.readAsDataURL(file);
+    });
 
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      setImageError("Please select a valid image file");
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
+    if (!files.length) return;
+
+    let latestError = "";
+    const validFiles: File[] = [];
+
+    files.forEach((file) => {
+      if (!file.type.startsWith("image/")) {
+        latestError = "Please select image files only";
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        latestError = "Each image must be less than 5MB";
+        return;
+      }
+
+      validFiles.push(file);
+    });
+
+    if (latestError) {
+      setImageError(latestError);
+    } else {
+      setImageError("");
+    }
+
+    if (!validFiles.length) {
+      e.target.value = "";
       return;
     }
 
-    // Validate file size
-    if (file.size > 5 * 1024 * 1024) {
-      setImageError("Image size must be less than 5MB");
-      return;
-    }
+    const previews = await Promise.all(
+      validFiles.map(async (file) => ({
+        file,
+        preview: await readFileAsDataUrl(file),
+      })),
+    );
 
-    setImageError("");
+    setLocalImages((prev) => [...prev, ...previews]);
     setFormData((prev) => ({
       ...prev,
-      image_file: file,
+      image_files: [...(prev.image_files ?? []), ...validFiles],
     }));
 
-    // Create preview
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setPreviewUrl(event.target?.result as string);
-    };
-    reader.readAsDataURL(file);
+    e.target.value = "";
+  };
+
+  const handleRemoveExistingImage = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      image_url: (prev.image_url ?? []).filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleRemoveNewImage = (index: number) => {
+    setLocalImages((prev) => prev.filter((_, i) => i !== index));
+    setFormData((prev) => ({
+      ...prev,
+      image_files: (prev.image_files ?? []).filter((_, i) => i !== index),
+    }));
   };
 
   const handleAddSkill = () => {
@@ -280,60 +322,117 @@ export default function ProjectForm({
       {/* Image Upload */}
       <div>
         <label className="block text-sm font-medium text-slate-200 mb-2">
-          Project Image
+          Project Images
         </label>
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div
+            role="button"
+            tabIndex={0}
             onClick={() => fileInputRef.current?.click()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
             className={cn(
               "border-2 border-dashed border-slate-600 rounded-lg p-6 text-center cursor-pointer",
-              "transition hover:border-indigo-500 hover:bg-slate-700/50",
+              "transition hover:border-indigo-500 hover:bg-slate-700/50 focus:outline-none focus:ring-2 focus:ring-indigo-500",
               "disabled:opacity-50 disabled:cursor-not-allowed",
             )}
           >
-            {previewUrl ? (
-              <div className="space-y-3">
-                <img
-                  src={previewUrl}
-                  alt="Preview"
-                  className="w-full h-40 object-cover rounded-lg"
-                />
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPreviewUrl("");
-                    setFormData((prev) => ({
-                      ...prev,
-                      image_file: undefined,
-                      image_url: "",
-                    }));
-                  }}
-                  disabled={isSubmitting}
-                  className="text-sm text-indigo-400 hover:text-indigo-300 transition"
-                >
-                  Change Image
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <div className="text-3xl text-slate-400">📷</div>
-                <p className="text-slate-300 font-medium">
-                  Click to upload image
+            <div className="space-y-2">
+              <div className="text-3xl text-slate-400">📷</div>
+              <p className="text-slate-300 font-medium">
+                Click to upload images
+              </p>
+              <p className="text-xs text-slate-400">
+                You can select multiple images (PNG, JPG up to 5MB each)
+              </p>
+              {(formData.image_url?.length ?? 0) + localImages.length > 0 && (
+                <p className="text-xs text-indigo-300">
+                  {(formData.image_url?.length ?? 0)} saved • {localImages.length}{" "}
+                  new
                 </p>
-                <p className="text-xs text-slate-400">PNG, JPG up to 5MB</p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
           <input
             ref={fileInputRef}
             type="file"
             accept="image/*"
+            multiple
             onChange={handleImageChange}
             disabled={isSubmitting}
             className="hidden"
           />
           {imageError && <p className="text-sm text-red-400">{imageError}</p>}
+
+          {(formData.image_url?.length ?? 0) + localImages.length > 0 ? (
+            <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+              {(formData.image_url ?? []).map((url, index) => (
+                <div
+                  key={`existing-${index}`}
+                  className="group relative overflow-hidden rounded-lg border border-slate-600"
+                >
+                  <img
+                    src={url}
+                    alt={`Project image ${index + 1}`}
+                    className="h-32 w-full object-cover transition duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 flex items-start justify-between p-2">
+                    <span className="rounded-full bg-slate-900/70 px-2 py-1 text-xs text-slate-200">
+                      Saved
+                    </span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveExistingImage(index);
+                      }}
+                      disabled={isSubmitting}
+                      className="rounded-full bg-black/60 px-2 py-1 text-xs text-red-200 opacity-0 transition group-hover:opacity-100"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {localImages.map((image, index) => (
+                <div
+                  key={`local-${index}`}
+                  className="group relative overflow-hidden rounded-lg border border-indigo-500/40"
+                >
+                  <img
+                    src={image.preview}
+                    alt={`New upload ${index + 1}`}
+                    className="h-32 w-full object-cover transition duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 flex items-start justify-between p-2">
+                    <span className="rounded-full bg-indigo-900/80 px-2 py-1 text-xs text-indigo-100">
+                      New
+                    </span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveNewImage(index);
+                      }}
+                      disabled={isSubmitting}
+                      className="rounded-full bg-black/60 px-2 py-1 text-xs text-red-200 opacity-0 transition group-hover:opacity-100"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-slate-400">
+              No images selected yet. Add at least one image to showcase your
+              project.
+            </p>
+          )}
         </div>
       </div>
 

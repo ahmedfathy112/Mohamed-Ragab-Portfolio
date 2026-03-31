@@ -12,7 +12,8 @@ const ProjectFormSchema = z.object({
   github_url: z.string().url("Invalid GitHub URL").or(z.literal("")),
   linkedin_url: z.string().url("Invalid LinkedIn URL").or(z.literal("")),
   skills: z.array(z.string()).min(1, "At least one skill is required"),
-  image_url: z.string().optional(),
+  // التعديل: أصبح الآن يتوقع مصفوفة من النصوص بدلاً من نص واحد
+  image_url: z.array(z.string().url()).default([]),
 });
 
 const ensureSupabaseEnv = () => {
@@ -25,6 +26,19 @@ const ensureSupabaseEnv = () => {
   }
 };
 
+const normalizeProject = (project: any): Project => {
+  const normalizedImages = Array.isArray(project?.image_url)
+    ? project.image_url.filter(Boolean)
+    : project?.image_url
+      ? [project.image_url]
+      : [];
+
+  return {
+    ...project,
+    image_url: normalizedImages,
+  } as Project;
+};
+
 export async function fetchProjects() {
   ensureSupabaseEnv();
   const { data, error } = await supabase
@@ -32,10 +46,12 @@ export async function fetchProjects() {
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
-  return (data as Project[]) || [];
+  return (data as Project[] | null)?.map(normalizeProject) || [];
 }
 
-export async function fetchProjectById(input: { data: { id: string } } | { id: string }) {
+export async function fetchProjectById(
+  input: { data: { id: string } } | { id: string },
+) {
   ensureSupabaseEnv();
   const id = "data" in input ? input.data.id : input.id;
   const { data, error } = await supabase
@@ -44,11 +60,13 @@ export async function fetchProjectById(input: { data: { id: string } } | { id: s
     .eq("id", id)
     .single();
   if (error) throw error;
-  return data as Project;
+  return normalizeProject(data);
 }
 
 // Create project
-export async function createProject(input: { data: Omit<ProjectFormData, "image_file"> }) {
+export async function createProject(input: {
+  data: Omit<ProjectFormData, "image_files">;
+}) {
   ensureSupabaseEnv();
   const validatedData = ProjectFormSchema.parse(input.data);
   const { data, error } = await supabase
@@ -60,7 +78,8 @@ export async function createProject(input: { data: Omit<ProjectFormData, "image_
         github_url: validatedData.github_url,
         linkedin_url: validatedData.linkedin_url,
         skills: validatedData.skills,
-        image_url: validatedData.image_url || null,
+        // التعديل: إرسال المصفوفة أو مصفوفة فارغة
+        image_url: validatedData.image_url ?? [],
       },
     ])
     .select()
@@ -84,7 +103,8 @@ export async function updateProject(input: { data: ProjectFormData }) {
       github_url: validatedData.github_url,
       linkedin_url: validatedData.linkedin_url,
       skills: validatedData.skills,
-      image_url: validatedData.image_url || null,
+      // التعديل: تحديث المصفوفة أو مصفوفة فارغة
+      image_url: validatedData.image_url ?? [],
       updated_at: new Date().toISOString(),
     })
     .eq("id", projectId)
@@ -95,7 +115,9 @@ export async function updateProject(input: { data: ProjectFormData }) {
 }
 
 // Delete project
-export async function deleteProject(input: { data: { id: string } } | { id: string }) {
+export async function deleteProject(
+  input: { data: { id: string } } | { id: string },
+) {
   ensureSupabaseEnv();
   const projectId = "data" in input ? input.data.id : input.id;
   if (!projectId) throw new Error("Missing project ID");
@@ -106,19 +128,31 @@ export async function deleteProject(input: { data: { id: string } } | { id: stri
     .eq("id", projectId)
     .single();
 
-  if (project?.image_url) {
-    const parts = project.image_url.split("/projects/");
-    if (parts.length > 1) {
-      await supabase.storage.from("projects").remove([decodeURI(parts[1])]);
+  // التعديل: حذف جميع الصور الموجودة في المصفوفة من الـ Storage
+  if (project?.image_url && Array.isArray(project.image_url)) {
+    const filesToDelete = project.image_url
+      .map((url: string) => {
+        const parts = url.split("/projects/");
+        return parts.length > 1 ? decodeURI(parts[1]) : null;
+      })
+      .filter(Boolean) as string[];
+
+    if (filesToDelete.length > 0) {
+      await supabase.storage.from("projects").remove(filesToDelete);
     }
   }
 
-  const { error } = await supabase.from("projects").delete().eq("id", projectId);
+  const { error } = await supabase
+    .from("projects")
+    .delete()
+    .eq("id", projectId);
   if (error) throw error;
   return { success: true };
 }
 
-export async function uploadProjectImage(input: { data: { fileName: string; base64: string } }) {
+export async function uploadProjectImage(input: {
+  data: { fileName: string; base64: string };
+}) {
   ensureSupabaseEnv();
   const { fileName, base64 } = input.data;
   const base64Data = base64.split(",")[1] ?? base64;

@@ -11,6 +11,8 @@ type ProjectCardProps = {
 };
 
 export function ProjectCard({ project, className }: ProjectCardProps) {
+  const primaryImage = project.image_url?.[0];
+
   return (
     <article
       className={cn(
@@ -23,9 +25,9 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
         params={{ slug: project.id }}
         className="block"
       >
-        {project.image_url ? (
+        {primaryImage ? (
           <img
-            src={project.image_url}
+            src={primaryImage}
             alt={project.title}
             className="h-56 w-full object-cover transition duration-500 group-hover:scale-[1.02]"
             loading="lazy"
